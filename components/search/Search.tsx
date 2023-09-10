@@ -17,7 +17,7 @@ export const Search = (): JSX.Element => {
     }
 
     const onSearch = (athlete: Athlete) => {
-        setNameValue(athlete.name)
+        setNameValue('')
         setAllGuesses(prevGuesses => [athlete, ...prevGuesses])
         setHasUserWon(checkGuess(athlete, correctAthlete))
     }
@@ -47,7 +47,7 @@ export const Search = (): JSX.Element => {
                     <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue)} />
                 </div>
                 {allGuesses?.length != 0 ? (
-                    <GuessItems athletes={allGuesses} />
+                    <GuessItems athletes={allGuesses} correctAthlete={correctAthlete}/>
                 ) : <></>}
             </div>
         )
