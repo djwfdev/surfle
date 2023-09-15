@@ -1,13 +1,16 @@
 import { Athlete, Country } from '../constants/searchConstants'
 
-const athletes = require('@/public/data/mct.json')
+const mctAthletes = require('@/public/data/mct.json')
+const wctAthletes = require('@/public/data/wct.json')
 const countryCodes = require('@/public/data/country_codes.json')
 
+const allAthletes = [...mctAthletes, ...wctAthletes];
+
 export const getRandomAthlete = (): Athlete => {
-    return athletes[Math.floor(Math.random() * athletes.length)]
+    return allAthletes[Math.floor(Math.random() * allAthletes.length)]
 }
 
-export const checkGuess = (athlete: Athlete, correctAthlete: Athlete): boolean => {
+export const checkGuess = (athlete: Athlete, correctAthlete: Athlete) => {
     if (athlete.name == correctAthlete.name) {
         console.log("You won!")
         return true
@@ -15,8 +18,8 @@ export const checkGuess = (athlete: Athlete, correctAthlete: Athlete): boolean =
     return false
 }
 
-export const getFilteredData = (nameValue: string): Athlete[] => {
-    return athletes.filter((item: Athlete) => {
+export const getFilteredData = (nameValue: string) => {
+    return allAthletes.filter((item: Athlete) => {
         const searchString = nameValue.toLowerCase()
         const name = item.name.toLowerCase()
 
@@ -24,22 +27,8 @@ export const getFilteredData = (nameValue: string): Athlete[] => {
     })
 }
 
-export const getFlagUrlFromName = (countryName: string): string | undefined => {
-    let url = ''
-    
-    fetch('https://flagcdn.com/en/codes.json')
-        .then((response: any) => {
-            for (const key in response.athletes) {
-                if (response.athletes.hasOwnProperty(key) && response.athletes[key] === countryName) {
-                    console.log(key)
-                    url = `https://flagcdn.com/w20/${key}.png` // Return the first key with a matching value
-                }
-            }
-        })
-        .catch((error: any) => {
-            console.log(error)
-            return undefined
-        })
+export const getCountryFromName = (countryName: string) => {
+    const code = countryCodes.find((country: Country) => country.name === countryName)?.code
 
-    return url
+    return {'name': countryName, 'code': code} as Country
 }

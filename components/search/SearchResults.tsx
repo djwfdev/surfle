@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Athlete } from '@/constants/searchConstants'
 import { Card, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
-import { getFlagUrlFromName } from '@/services/searchService'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 interface SearchResultsProps {

@@ -1,7 +1,7 @@
 [
     {
         "name": "Barron Mamiya",
-        "country": "Hawaii",
+        "country": "United States",
         "rank": 12,
         "stance": "Regular",
         "age": 23,
@@ -67,7 +67,7 @@
     },
     {
         "name": "Ezekiel Lau",
-        "country": "Hawaii",
+        "country": "United States",
         "rank": 32,
         "stance": "Regular",
         "age": 29,
@@ -111,7 +111,7 @@
     },
     {
         "name": "Ian Gentil",
-        "country": "Hawaii",
+        "country": "United States",
         "rank": 14,
         "stance": "Regular",
         "age": 26,
@@ -188,7 +188,7 @@
     },
     {
         "name": "John John Florence",
-        "country": "Hawaii",
+        "country": "United States",
         "rank": 8,
         "stance": "Regular",
         "age": 30,
@@ -364,7 +364,7 @@
     },
     {
         "name": "Seth Moniz",
-        "country": "Hawaii",
+        "country": "United States",
         "rank": 22,
         "stance": "Regular",
         "age": 26,
