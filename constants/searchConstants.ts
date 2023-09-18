@@ -1,16 +1,21 @@
 export interface Athlete {
-    name: string,
-    country: string,
-    rank: number,
-    stance: string,
-    age: number,
-    height: number,
-    gender: string,
-    url: string,
+    name: string
+    country: string | Country
+    rank: number | string
+    stance: string
+    dob: string
+    height: number
+    gender: string
+    url: string
     img: string
+    age: number
 }
 
 export interface Country {
-    code: string,
+    code: string
     name: string
+}
+
+export interface RankRange {
+    (rank: number): string
 }

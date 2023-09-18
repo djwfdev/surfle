@@ -1,10 +1,7 @@
 import { Athlete } from '@/constants/searchConstants'
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { Card, CardContent } from '../ui/card'
-import { ChevronDown, ChevronUp } from 'lucide-react'
 import { GuessItemStatCard } from './GuessItemStatCard'
-import { getCountryFromName } from '@/services/searchService'
 
 interface GuessProps {
     athletes: Athlete[]
@@ -15,8 +12,8 @@ export const GuessItems = ({ athletes, correctAthlete }: GuessProps): JSX.Elemen
     return (
         <>
             {athletes.length > 0 && (
-                athletes.map((athlete: Athlete) => (
-                    <div className='flex flex-col py-3 z-0' key={athlete.name}>
+                athletes.map((athlete: Athlete, index) => (
+                    <div className='flex flex-col py-3 z-0' key={index}>
                         <div className='flex flex-row justify-start items-center gap-3'>
                             <Avatar>
                                 <AvatarImage src={athlete.img} alt={athlete.name} />
@@ -32,7 +29,8 @@ export const GuessItems = ({ athletes, correctAthlete }: GuessProps): JSX.Elemen
                             </div>
                             <div className='flex flex-row justify-center items-center gap-3'>
                                 <GuessItemStatCard label='Gender' value={athlete.gender} correctValue={correctAthlete.gender} />
-                                <GuessItemStatCard label='Country' value={getCountryFromName(athlete.country)} correctValue={getCountryFromName(correctAthlete.country)} />
+                                <GuessItemStatCard label='Rank' value={athlete.rank} correctValue={correctAthlete.rank} />
+                                <GuessItemStatCard label='Country' value={athlete.country} correctValue={correctAthlete.country} />
                             </div>
                         </div>
                     </div>

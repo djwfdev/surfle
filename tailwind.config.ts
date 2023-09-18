@@ -74,6 +74,9 @@ module.exports = {
             width: {
                 '112': '28rem',
             },
+            height: {
+                '22': '5.5rem'
+            }
         },
     },
     plugins: [require("tailwindcss-animate")],

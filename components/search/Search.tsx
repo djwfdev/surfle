@@ -1,10 +1,11 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Input } from '../ui/input'
 import { SearchResults } from './SearchResults'
 import { Athlete } from '@/constants/searchConstants'
 import Confetti from 'react-confetti'
 import { checkGuess, getFilteredData, getRandomAthlete } from '@/services/searchService'
 import { GuessItems } from '../guess/GuessItems'
+import { useAthletePreprocessing } from '@/hooks/useAthleteProcessing'
 
 export const Search = (): JSX.Element => {
     const [correctAthlete, setCorrectAthlete] = useState({} as Athlete)
@@ -25,6 +26,8 @@ export const Search = (): JSX.Element => {
     useLayoutEffect(() => {
         setCorrectAthlete(getRandomAthlete())
     }, [])
+
+    const preprocessedGuesses = useAthletePreprocessing(allGuesses)
 
     return (
         hasUserWon ? (
@@ -47,7 +50,7 @@ export const Search = (): JSX.Element => {
                     <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue)} />
                 </div>
                 {allGuesses?.length != 0 ? (
-                    <GuessItems athletes={allGuesses} correctAthlete={correctAthlete}/>
+                    <GuessItems athletes={preprocessedGuesses} correctAthlete={correctAthlete} />
                 ) : <></>}
             </div>
         )
