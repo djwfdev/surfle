@@ -13,16 +13,16 @@ interface GuessItemStatCardProps {
 }
 
 export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatCardProps): JSX.Element => {
-    const { isMetric } = useSettings();
+    const { isMetric } = useSettings()
 
     const formattedValue = (value: number | string | Country) => {
         if (isHeight(value)) {
             const feet = Math.floor(value / 30.48)
             const inches = Math.round((value / 2.54) % 12)
             if (inches === 12)
-                return isMetric ? `${value} cm` : `${feet + 1}' 0"`;
+                return isMetric ? `${value} cm` : `${feet + 1}' 0"`
             else
-                return isMetric ? `${value} cm` : `${feet}' ${inches}"`;
+                return isMetric ? `${value} cm` : `${feet}' ${inches}"`
         }
         else if (isCountry(value))
             return <FlagImage flagCode={value.code} countryName={value.name} />
@@ -44,7 +44,7 @@ export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatC
     const [cardClassName, icon] = typeof value === 'number'
         ? checkNumber(Number(value), Number(correctValue))
         : (isCountry(value) && isCountry(correctValue)) ? [checkString(value.code, correctValue.code), null]
-            : [checkString(value as string, correctValue as string), null]
+            : [checkString(String(value), String(correctValue)), null]
 
     return (
         <Card>

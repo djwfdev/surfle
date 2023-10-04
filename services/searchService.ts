@@ -1,3 +1,4 @@
+import { useAthletePreprocessing } from '@/hooks/useAthleteProcessing'
 import { Athlete, Country, RankRange } from '../constants/searchConstants'
 import moment from 'moment'
 
@@ -5,10 +6,10 @@ const mctAthletes = require('@/public/data/mct.json')
 const wctAthletes = require('@/public/data/wct.json')
 const countryCodes = require('@/public/data/country_codes.json')
 
-const allAthletes = [...mctAthletes, ...wctAthletes];
+const allAthletes = [...mctAthletes, ...wctAthletes]
 
 export const getRandomAthlete = () => {
-    return allAthletes[Math.floor(Math.random() * allAthletes.length)]
+    return useAthletePreprocessing([allAthletes[Math.floor(Math.random() * allAthletes.length)]])[0]
 }
 
 export const checkGuess = (athlete: Athlete, correctAthlete: Athlete) => {
