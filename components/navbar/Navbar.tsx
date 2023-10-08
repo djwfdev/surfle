@@ -1,6 +1,7 @@
 import React from 'react'
-import { InfoDialog } from './InfoDialog';
-import { UnitsToggle } from './UnitsToggle';
+import { InfoDialog } from './InfoDialog'
+import { SettingsDialog } from './SettingsDialog'
+import { UnitsToggle } from './UnitsToggle'
 
 export const Navbar = (): JSX.Element => {
     return (
@@ -11,6 +12,7 @@ export const Navbar = (): JSX.Element => {
             </h3>
             {/* Button group */}
             <div className='flex flex-row gap-1'>
+                <SettingsDialog />
                 <InfoDialog />
                 <UnitsToggle />
             </div>

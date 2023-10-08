@@ -18,7 +18,7 @@ export const useSettings = (): SettingsContextType => {
 }
 
 export const SettingsProvider = ({ children }: any) => {
-    const [isMetric, setIsMetric] = useState<boolean>(true) // Default to imperial units
+    const [isMetric, setIsMetric] = useState<boolean>(true)
 
     useEffect(() => {
         const storedSetting = window.sessionStorage.getItem('unitPreference')
@@ -38,9 +38,5 @@ export const SettingsProvider = ({ children }: any) => {
         toggleUnits,
     }
 
-    return (
-        <SettingsContext.Provider value={contextValue}>
-            {children}
-        </SettingsContext.Provider>
-    )
+    return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>
 }

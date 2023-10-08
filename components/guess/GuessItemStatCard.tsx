@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
 import { Card, CardContent } from '../ui/card'
 import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useSettings } from '@/context/SettingsContext'
 import { Country } from '@/constants/searchConstants'
-import { isCountry, isHeight } from '@/services/searchService'
+import { getImperialHeight, isCountry, isHeight } from '@/services/searchService'
 import { FlagImage } from './FlagImage'
+import { useSettings } from '@/context/SettingsContext'
 
 interface GuessItemStatCardProps {
     label: string
@@ -17,12 +17,7 @@ export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatC
 
     const formattedValue = (value: number | string | Country) => {
         if (isHeight(value)) {
-            const feet = Math.floor(value / 30.48)
-            const inches = Math.round((value / 2.54) % 12)
-            if (inches === 12)
-                return isMetric ? `${value} cm` : `${feet + 1}' 0"`
-            else
-                return isMetric ? `${value} cm` : `${feet}' ${inches}"`
+            return isMetric ? `${value} cm` : getImperialHeight(value)
         }
         else if (isCountry(value))
             return <FlagImage flagCode={value.code} countryName={value.name} />
@@ -31,7 +26,7 @@ export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatC
     }
 
     const checkNumber = (number: number, correctValue: number): [string, ReactElement] => {
-        const amber = Math.abs(number - correctValue) <= (isHeight(number) ? 6 : 3) ? 'bg-amber-500' : ''
+        const amber = Math.abs(number - correctValue) <= (isHeight(number) ? 5 : 3) ? 'bg-amber-500' : ''
         const icon = number === correctValue ? <></> : number > correctValue ? <ChevronDown /> : <ChevronUp />
 
         return [number === correctValue ? 'bg-green-700 text-white' : amber, icon || <></>]
@@ -48,7 +43,7 @@ export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatC
 
     return (
         <Card>
-            <CardContent className={`h-22 flex flex-col items-center justify-center py-[9.75px] rounded ${cardClassName}`}>
+            <CardContent className={`h-22 w-max flex flex-col items-center justify-center py-[9.75px] rounded ${cardClassName}`}>
                 <p className='tracking-wide font-bold'>{label}</p>
                 <div className='flex flex-row gap-1'>
                     {formattedValue(value)}

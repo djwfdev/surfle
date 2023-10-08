@@ -39,6 +39,15 @@ export const getAgeFromDob = (dob: string) => {
     return moment().diff(moment(dob, 'DD/MM/YYYY'), 'years');
 }
 
+export const getImperialHeight = (height: number) => {
+    const feet = Math.floor(height / 30.48)
+    const inches = Math.round((height / 2.54) % 12)
+    if (inches === 12)
+        return `${feet + 1}' 0"`
+    else
+        return `${feet}' ${inches}"`
+}
+
 export const getFormattedRankString: RankRange = (rank) => {
     if (rank >= 1 && rank <= 10)
         return '1-10'

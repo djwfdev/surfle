@@ -2,7 +2,7 @@ import React from 'react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 
 export interface FlagImageProps {
-    flagCode: string,
+    flagCode: string
     countryName: string
 }
 
@@ -13,7 +13,7 @@ export const FlagImage = ({ flagCode, countryName }: FlagImageProps): JSX.Elemen
                 <TooltipTrigger asChild>
                     <img src={`https://flagsapi.com/${flagCode}/flat/48.png`} alt={countryName} />
                 </TooltipTrigger>
-                <TooltipContent side='bottom'>
+                <TooltipContent side="bottom">
                     <p>{countryName}</p>
                 </TooltipContent>
             </Tooltip>
