@@ -19,7 +19,7 @@ export const SettingsDialog = (): JSX.Element => {
                 <Card>
                     <CardHeader className='flex flex-row gap-2 justify-center items-center'>
                         <AlertTriangle className='h-6 w-6' />
-                        Work in progress
+                        {/* TODO: Add settings? */}
                     </CardHeader>
                 </Card>
                 <DialogFooter>

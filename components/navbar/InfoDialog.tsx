@@ -1,11 +1,40 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Info } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent } from '../ui/card'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useSettings } from '@/context/SettingsContext'
 import { getImperialHeight } from '@/services/searchService'
+
+interface InfoCardProps {
+    title: string
+    description: ReactElement
+    value: string | number
+    icon?: ReactElement
+    textAlignLeft?: boolean
+    isGreen?: boolean
+}
+
+const InfoCard = ({ title, description, value, icon, textAlignLeft, isGreen }: InfoCardProps) => {
+    return (
+        <Card>
+            <CardContent className='flex flex-row justify-start p-2 gap-2 items-center'>
+                {textAlignLeft && <div>{description}</div>}
+                <Card className='h-22'>
+                    <CardContent className={`h-22 w-max flex flex-col items-center justify-center py-[9.75px] rounded ${isGreen ? 'bg-green-700 text-white' : 'bg-amber-500'}`}>
+                        <p className='tracking-wide font-bold'>{title}</p>
+                        <div className='flex flex-row gap-1'>
+                            <p>{value}</p>
+                            {icon}
+                        </div>
+                    </CardContent>
+                </Card>
+                {!textAlignLeft && <div>{description}</div>}
+            </CardContent>
+        </Card>
+    )
+}
 
 export const InfoDialog = (): JSX.Element => {
     const { isMetric } = useSettings()
@@ -19,42 +48,27 @@ export const InfoDialog = (): JSX.Element => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Attributes</DialogTitle>
+                    <DialogTitle>Guide</DialogTitle>
                 </DialogHeader>
-                <Card>
-                    <CardContent className='flex flex-row justify-start p-2 gap-2'>
-                        <Card>
-                            <CardContent className='h-22 flex flex-col items-center justify-center py-[9.75px] rounded bg-amber-500'>
-                                <p className='tracking-wide font-bold'>Age</p>
-                                <div className='flex flex-row gap-1'>
-                                    <p>25</p>
-                                    <ChevronDown />
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <div>
-                            The age of the surfer will turn yellow if the guess is 
-                            within <b>3 years</b> of the unknown surfer's age.
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent className='flex flex-row justify-start p-2 gap-2'>
-                        <div>
-                            The height of the surfer will turn yellow if the guess is 
-                            within <b>{isMetric ? '5 cm' : '2 inches'}</b> of the unknown surfer's height.
-                        </div>
-                        <Card>
-                            <CardContent className='h-22 w-max flex flex-col items-center justify-center py-[9.75px] rounded bg-amber-500'>
-                                <p className='tracking-wide font-bold'>Height</p>
-                                <div className='flex flex-row gap-1'>
-                                    <p>{isMetric ? '168 cm' : getImperialHeight(168)}</p>
-                                    <ChevronUp />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </CardContent>
-                </Card>
+                <InfoCard
+                    title='Age'
+                    description={<>The age of the surfer will turn orange if the guess is within <b>3 years</b> of the unknown surfer's age.</>}
+                    value={25}
+                    icon={<ChevronDown />}
+                />
+                <InfoCard
+                    title='Height'
+                    description={<>The height of the surfer will turn orange if the guess is within <b>{isMetric ? '5 cm' : '2 inches'}</b> of the unknown surfer's height.</>}
+                    value={isMetric ? '173 cm' : getImperialHeight(173)}
+                    icon={<ChevronUp />}
+                    textAlignLeft
+                />
+                <InfoCard
+                    title='Rank'
+                    description={<>All other fields will not turn orange; they will only turn green if the attribute <b>exactly</b> matches the unknown surfer's attribute.</>}
+                    value='1-10'
+                    isGreen
+                />
                 <DialogFooter>
                     <DialogTrigger asChild>
                         <Button>Ok</Button>

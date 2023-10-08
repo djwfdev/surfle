@@ -19,3 +19,5 @@ export interface Country {
 export interface RankRange {
     (rank: number): string
 }
+
+export const MAX_GUESSES = 7

@@ -1,16 +1,17 @@
-import React, { useState, useLayoutEffect, useEffect, useCallback, use } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Input } from '../ui/input'
 import { SearchResults } from './SearchResults'
-import { Athlete } from '@/constants/searchConstants'
-import { checkGuess, getFilteredData, getRandomAthlete } from '@/services/searchService'
+import { Athlete, MAX_GUESSES } from '@/constants/searchConstants'
+import { getFilteredData, getRandomAthlete, processAthletes } from '@/services/searchService'
 import { GuessItems } from '../guess/GuessItems'
-import { useAthletePreprocessing } from '@/hooks/useAthleteProcessing'
-import ConfettiExplosion from 'react-confetti-explosion'
 import { Button } from '../ui/button'
+import { Card, CardContent } from '../ui/card'
+import ConfettiExplosion from 'react-confetti-explosion'
 
 export const Search = (): JSX.Element => {
     const [correctAthlete, setCorrectAthlete] = useState({} as Athlete)
     const [hasUserWon, setHasUserWon] = useState(false)
+    const [hasUserLost, setHasUserLost] = useState(false)
     const [nameValue, setNameValue] = useState('')
     const [allGuesses, setAllGuesses] = useState<Athlete[]>([])
     const [processedGuesses, setProcessedGuesses] = useState<Athlete[]>([])
@@ -21,12 +22,14 @@ export const Search = (): JSX.Element => {
 
     const onSearch = (athlete: Athlete) => {
         setNameValue('')
-        setAllGuesses(prevGuesses => [athlete, ...prevGuesses])
-        setHasUserWon(checkGuess(athlete, correctAthlete))
+        setAllGuesses((prevGuesses) => [athlete, ...prevGuesses])
+        setHasUserWon(athlete.name == correctAthlete.name)
+        setHasUserLost(allGuesses.length + 1 >= MAX_GUESSES)
     }
 
     const restartGame = () => {
         setHasUserWon(false)
+        setHasUserLost(false)
         setNameValue('')
         setAllGuesses([])
         setProcessedGuesses([])
@@ -38,41 +41,74 @@ export const Search = (): JSX.Element => {
     }, [])
 
     useEffect(() => {
-        setProcessedGuesses(useAthletePreprocessing(allGuesses))
-        console.table(correctAthlete)
+        setProcessedGuesses(processAthletes(allGuesses))
     }, [allGuesses])
 
     return (
-        <div className='flex items-center justify-center'>
-            {hasUserWon ? (
-                <>
-                    <ConfettiExplosion
-                        force={0.7}
-                        duration={3000}
-                        particleCount={200}
-                        width={window.innerWidth / 1.2}
-                    />
-                    <h1>You won!</h1>
-                    <Button onClick={restartGame}>Play Again</Button>
-                </>
-            ) : (
+        <div className='flex flex-col items-center justify-center gap-2'>
+            {hasUserWon && (
+                <Card className='w-7/12'>
+                    <CardContent className='flex flex-col items-center gap-2 p-6'>
+                        <h3 className='scroll-m-20 text-2xl font-semibold tracking-tight text-green-800'>You won!</h3>
+                        <img className='mb-2' src='img/trophy.gif'></img>
+                        <ConfettiExplosion 
+                            force={0.7} 
+                            duration={3000} 
+                            particleCount={200} 
+                            width={window.innerWidth / 1.1} 
+                        />
+                        <p className='tracking-wide'>
+                            It was <a className='text-blue-600 hover:text-blue-800 font-semibold underline' href={correctAthlete.url} target='_blank'>
+                                {correctAthlete.name}
+                            </a>
+                        </p>
+                        <div className='flex gap-4 mt-6'>
+                            {/* TODO: Add custom games? */}
+                            {/* <Button variant='outline' onClick={restartGame}>Custom Game</Button> */}
+                            <Button onClick={restartGame}>Play Again</Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+            {hasUserLost && (
+                <Card className='w-7/12'>
+                    <CardContent className='flex flex-col items-center gap-2 p-6'>
+                        <h3 className='scroll-m-20 text-2xl font-semibold tracking-tight text-red-900'>You lost :/</h3>
+                        <p className='tracking-wide py-4'>
+                            It was <a className='text-blue-600 hover:text-blue-800 font-semibold underline' href={correctAthlete.url} target='_blank'>
+                                {correctAthlete.name}
+                            </a>
+                        </p>
+                        <div className='flex gap-4 mt-2'>
+                            {/* TODO: Add custom games? */}
+                            {/* <Button variant='outline' onClick={restartGame}>Custom Game</Button> */}
+                            <Button onClick={restartGame}>Play Again</Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+            {!hasUserWon && !hasUserLost && (
                 <div className='w-112 flex flex-col gap-2 justify-center p-8 m-auto relative'>
-                    <div className='flex justify-end mb-2 mr-1 text-sm'>
-                        {'Guess ' + allGuesses.length + ' of 10'}
+                    <div className='flex justify-between mb-2 mr-1 text-sm'>
+                        <p className='font-semibold'>{allGuesses.length + 1 == MAX_GUESSES && 'Last guess!'}</p>
+                        <p>{`Guess ${allGuesses.length + 1} of ${MAX_GUESSES}`}</p>
                     </div>
                     <div>
-                        <Input
-                            type='text'
-                            placeholder="Search for an athlete ..."
-                            value={nameValue}
-                            onChange={onChange}
-                        />
+                        <Input type='text' placeholder='Search for an athlete ...' value={nameValue} onChange={onChange} />
                         <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue)} />
                     </div>
-                    {allGuesses?.length != 0 ? (
-                        <GuessItems athletes={processedGuesses} correctAthlete={correctAthlete} />
-                    ) : <></>}
+                    {allGuesses?.length != 0 ? <GuessItems athletes={processedGuesses} correctAthlete={correctAthlete} /> : <></>}
                 </div>
+            )}
+            {allGuesses.length == 0 && (
+                <Card className='w-96'>
+                    <CardContent className='flex flex-col items-center gap-4 p-6 text-center'>
+                        <p className='tracking-wide font-semibold'>Welcome to Surfle!</p>
+                        <p className='tracking-wide'> The surfing themed wordle game.</p>
+                        <p className='tracking-wide'>As you make guesses, you will discover hints that should lead you to the correct surfer.
+                        Make your initial prediction using the search box above. Best of luck :)</p>
+                    </CardContent>
+                </Card>
             )}
         </div>
     )

@@ -1,4 +1,3 @@
-import { useAthletePreprocessing } from '@/hooks/useAthleteProcessing'
 import { Athlete, Country, RankRange } from '../constants/searchConstants'
 import moment from 'moment'
 
@@ -9,15 +8,7 @@ const countryCodes = require('@/public/data/country_codes.json')
 const allAthletes = [...mctAthletes, ...wctAthletes]
 
 export const getRandomAthlete = () => {
-    return useAthletePreprocessing([allAthletes[Math.floor(Math.random() * allAthletes.length)]])[0]
-}
-
-export const checkGuess = (athlete: Athlete, correctAthlete: Athlete) => {
-    if (athlete.name == correctAthlete.name) {
-        console.log('You won!')
-        return true
-    }
-    return false
+    return processAthletes([allAthletes[Math.floor(Math.random() * allAthletes.length)]])[0]
 }
 
 export const getFilteredData = (nameValue: string) => {
@@ -36,7 +27,7 @@ export const getCountryFromName = (countryName: string) => {
 }
 
 export const getAgeFromDob = (dob: string) => {
-    return moment().diff(moment(dob, 'DD/MM/YYYY'), 'years');
+    return moment().diff(moment(dob, 'DD/MM/YYYY'), 'years')
 }
 
 export const getImperialHeight = (height: number) => {
@@ -57,7 +48,26 @@ export const getFormattedRankString: RankRange = (rank) => {
         return '21-34'
     else
         return '-'
-};
+}
+
+export const processAthletes = (athletes: Athlete[]) => {
+    const processedAthletes = athletes.map((athlete) => {
+        return {
+            name: athlete.name,
+            age: getAgeFromDob(athlete.dob),
+            country: getCountryFromName(String(athlete.country)),
+            rank: getFormattedRankString(Number(athlete.rank)),
+            stance: athlete.stance,
+            height: athlete.height,
+            gender: athlete.gender,
+            img: athlete.img,
+            dob: athlete.dob,
+            url: athlete.url
+        }
+    })
+
+    return processedAthletes
+}
 
 export const isCountry = (value: any): value is Country => {
     return typeof value === 'object' && value !== null && 'code' in value && 'name' in value

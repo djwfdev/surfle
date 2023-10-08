@@ -26,27 +26,28 @@ export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatC
     }
 
     const checkNumber = (number: number, correctValue: number): [string, ReactElement] => {
-        const amber = Math.abs(number - correctValue) <= (isHeight(number) ? 5 : 3) ? 'bg-amber-500' : ''
+        const notCorrectColour = Math.abs(number - correctValue) <= (isHeight(number) ? 5 : 3) ? 'bg-amber-500' : 'bg-gray-100'
         const icon = number === correctValue ? <></> : number > correctValue ? <ChevronDown /> : <ChevronUp />
 
-        return [number === correctValue ? 'bg-green-700 text-white' : amber, icon || <></>]
+        return [number === correctValue ? 'bg-green-700 text-white' : notCorrectColour, icon || <></>]
     }
 
     const checkString = (text: string, correctText: string): string => {
-        return text === correctText ? 'bg-green-700 text-white' : ''
+        return text === correctText ? 'bg-green-700 text-white' : 'bg-gray-100'
     }
 
+    // concise if-else block
     const [cardClassName, icon] = typeof value === 'number'
         ? checkNumber(Number(value), Number(correctValue))
         : (isCountry(value) && isCountry(correctValue)) ? [checkString(value.code, correctValue.code), null]
             : [checkString(String(value), String(correctValue)), null]
 
     return (
-        <Card>
-            <CardContent className={`h-22 w-max flex flex-col items-center justify-center py-[9.75px] rounded ${cardClassName}`}>
+        <Card className='drop-shadow-sm'>
+            <CardContent className={`h-22 flex flex-col items-center justify-center py-[9.75px] rounded ${cardClassName}`}>
                 <p className='tracking-wide font-bold'>{label}</p>
                 <div className='flex flex-row gap-1'>
-                    {formattedValue(value)}
+                    <p>{formattedValue(value)}</p>
                     {icon}
                 </div>
             </CardContent>
