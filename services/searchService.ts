@@ -1,11 +1,42 @@
 import { Athlete, Country, RankRange } from '../constants/searchConstants'
 import moment from 'moment'
+import * as crypto from 'crypto'
 
 const mctAthletes = require('@/public/data/mct.json')
 const wctAthletes = require('@/public/data/wct.json')
 const countryCodes = require('@/public/data/country_codes.json')
 
 const allAthletes = [...mctAthletes, ...wctAthletes]
+const athleteMapping: Record<string, string> = {}
+
+const generateUniqueToken = (athleteName: string) => {
+    // Generate a random salt for each athlete
+    const salt = crypto.randomBytes(16).toString('hex')
+    const combinedString = athleteName + salt
+
+    // Generate a unique token using SHA-256
+    return crypto.createHash('sha256').update(combinedString).digest('hex').substring(0, 8)
+}
+
+const decodeAthleteToken = (token: string) => {
+    return athleteMapping[token]
+}
+
+export const generateAndStoreTokens = () => {
+    for (const athlete of allAthletes) {
+        const token = generateUniqueToken(athlete.name)
+        console.log(`Generated token ${token} for athlete ${athlete.name}`)
+        athleteMapping[token] = athlete.name
+    }
+}
+
+export const getAthlete = (athleteHashCode: string) => {
+    const nameValue = decodeAthleteToken(athleteHashCode)
+    const athlete = allAthletes.find((item: Athlete) => { 
+        return nameValue.toLowerCase() == item.name.toLowerCase()
+    })
+    return processAthletes([athlete])[0]
+}
 
 export const getRandomAthlete = () => {
     return processAthletes([allAthletes[Math.floor(Math.random() * allAthletes.length)]])[0]

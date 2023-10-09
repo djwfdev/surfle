@@ -2,13 +2,17 @@ import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Input } from '../ui/input'
 import { SearchResults } from './SearchResults'
 import { Athlete, MAX_GUESSES } from '@/constants/searchConstants'
-import { getFilteredData, getRandomAthlete, processAthletes } from '@/services/searchService'
+import { generateAndStoreTokens, getAthlete, getFilteredData, getRandomAthlete, processAthletes } from '@/services/searchService'
 import { GuessItems } from '../guess/GuessItems'
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 import ConfettiExplosion from 'react-confetti-explosion'
 
-export const Search = (): JSX.Element => {
+interface SearchProps {
+    athleteHashCode?: string
+}
+
+export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
     const [correctAthlete, setCorrectAthlete] = useState({} as Athlete)
     const [hasUserWon, setHasUserWon] = useState(false)
     const [hasUserLost, setHasUserLost] = useState(false)
@@ -25,6 +29,7 @@ export const Search = (): JSX.Element => {
         setAllGuesses((prevGuesses) => [athlete, ...prevGuesses])
         setHasUserWon(athlete.name == correctAthlete.name)
         setHasUserLost(allGuesses.length + 1 >= MAX_GUESSES)
+        console.log(correctAthlete.name)
     }
 
     const restartGame = () => {
@@ -37,7 +42,12 @@ export const Search = (): JSX.Element => {
     }
 
     useLayoutEffect(() => {
-        setCorrectAthlete(() => getRandomAthlete())
+        if (athleteHashCode) {
+            generateAndStoreTokens()
+            setCorrectAthlete(() => getAthlete(athleteHashCode))
+        } else {
+            setCorrectAthlete(() => getRandomAthlete())
+        }
     }, [])
 
     useEffect(() => {
@@ -49,13 +59,13 @@ export const Search = (): JSX.Element => {
             {hasUserWon && (
                 <Card className='w-7/12'>
                     <CardContent className='flex flex-col items-center gap-2 p-6'>
-                        <h3 className='scroll-m-20 text-2xl font-semibold tracking-tight text-green-800'>You won!</h3>
+                        <h3 className='text-2xl font-semibold tracking-tight text-green-800'>You won!</h3>
                         <img className='mb-2' src='img/trophy.gif'></img>
-                        <ConfettiExplosion 
-                            force={0.7} 
-                            duration={3000} 
-                            particleCount={200} 
-                            width={window.innerWidth / 1.1} 
+                        <ConfettiExplosion
+                            force={0.7}
+                            duration={3200}
+                            particleCount={200}
+                            width={window.innerWidth / 1.1}
                         />
                         <p className='tracking-wide'>
                             It was <a className='text-blue-600 hover:text-blue-800 font-semibold underline' href={correctAthlete.url} target='_blank'>
@@ -73,7 +83,7 @@ export const Search = (): JSX.Element => {
             {hasUserLost && (
                 <Card className='w-7/12'>
                     <CardContent className='flex flex-col items-center gap-2 p-6'>
-                        <h3 className='scroll-m-20 text-2xl font-semibold tracking-tight text-red-900'>You lost :/</h3>
+                        <h3 className='text-2xl font-semibold tracking-tight text-red-900'>You lost :/</h3>
                         <p className='tracking-wide py-4'>
                             It was <a className='text-blue-600 hover:text-blue-800 font-semibold underline' href={correctAthlete.url} target='_blank'>
                                 {correctAthlete.name}
@@ -104,7 +114,7 @@ export const Search = (): JSX.Element => {
                 <Card className='w-96'>
                     <CardContent className='flex flex-col items-center gap-4 p-6 text-center'>
                         <p className='tracking-wide font-semibold'>Welcome to Surfle!</p>
-                        <p className='tracking-wide'> The surfing themed wordle game.</p>
+                        <p className='tracking-wide'>The surfing themed wordle game.</p>
                         <p className='tracking-wide'>As you make guesses, you will discover hints that should lead you to the correct surfer.
                         Make your initial prediction using the search box above. Best of luck :)</p>
                     </CardContent>
