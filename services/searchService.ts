@@ -1,40 +1,37 @@
 import { Athlete, Country, RankRange } from '../constants/searchConstants'
 import moment from 'moment'
-import * as crypto from 'crypto'
 
 const mctAthletes = require('@/public/data/mct.json')
 const wctAthletes = require('@/public/data/wct.json')
 const countryCodes = require('@/public/data/country_codes.json')
 
 const allAthletes = [...mctAthletes, ...wctAthletes]
-const athleteMapping: Record<string, string> = {}
 
-const generateUniqueToken = (athleteName: string) => {
-    // Generate a random salt for each athlete
-    const salt = crypto.randomBytes(16).toString('hex')
-    const combinedString = athleteName + salt
+const generateRandomNonce = (len: number) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let nonce = ''
+    for (let i = 0; i < len; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length)
+        nonce += characters.charAt(randomIndex)
+    }
+    return nonce
+}
 
-    // Generate a unique token using SHA-256
-    return crypto.createHash('sha256').update(combinedString).digest('hex').substring(0, 8)
+export const generateUniqueToken = (athleteName: string) => {
+    const combinedString = generateRandomNonce(4) + athleteName + generateRandomNonce(4)
+    return Buffer.from(combinedString, 'binary').toString('base64')
 }
 
 const decodeAthleteToken = (token: string) => {
-    return athleteMapping[token]
-}
-
-export const generateAndStoreTokens = () => {
-    for (const athlete of allAthletes) {
-        const token = generateUniqueToken(athlete.name)
-        console.log(`Generated token ${token} for athlete ${athlete.name}`)
-        athleteMapping[token] = athlete.name
-    }
+    return Buffer.from(token, 'base64').toString('binary').slice(4, -4)
 }
 
 export const getAthlete = (athleteHashCode: string) => {
     const nameValue = decodeAthleteToken(athleteHashCode)
     const athlete = allAthletes.find((item: Athlete) => { 
-        return nameValue.toLowerCase() == item.name.toLowerCase()
+        return nameValue.toLowerCase().includes(item.name.toLowerCase())
     })
+    console.log(athlete)
     return processAthletes([athlete])[0]
 }
 

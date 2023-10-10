@@ -14,7 +14,7 @@ export const FlagImage = ({ flagCode, countryName }: FlagImageProps): JSX.Elemen
                     <img src={`https://flagsapi.com/${flagCode}/flat/48.png`} alt={countryName} />
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
-                    <p>{countryName}</p>
+                    {countryName}
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

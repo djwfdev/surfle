@@ -19,12 +19,12 @@ interface InfoCardProps {
 const InfoCard = ({ title, description, value, icon, textAlignLeft, isGreen }: InfoCardProps) => {
     return (
         <Card>
-            <CardContent className='flex flex-row justify-start p-2 gap-2 items-center'>
+            <CardContent className='flex  justify-start p-2 gap-2 items-center'>
                 {textAlignLeft && <div>{description}</div>}
                 <Card className='h-22'>
                     <CardContent className={`h-22 w-max flex flex-col items-center justify-center py-[9.75px] rounded ${isGreen ? 'bg-green-700 text-white' : 'bg-amber-500'}`}>
                         <p className='tracking-wide font-bold'>{title}</p>
-                        <div className='flex flex-row gap-1'>
+                        <div className='flex  gap-1'>
                             <p>{value}</p>
                             {icon}
                         </div>

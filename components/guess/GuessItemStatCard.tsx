@@ -46,7 +46,7 @@ export const GuessItemStatCard = ({ label, value, correctValue }: GuessItemStatC
         <Card className='drop-shadow-sm'>
             <CardContent className={`h-22 flex flex-col items-center justify-center py-[9.75px] rounded ${cardClassName}`}>
                 <p className='tracking-wide font-bold'>{label}</p>
-                <div className='flex flex-row gap-1'>
+                <div className='flex  gap-1'>
                     <p>{formattedValue(value)}</p>
                     {icon}
                 </div>
