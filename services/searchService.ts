@@ -1,4 +1,4 @@
-import { Athlete, Country, RankRange } from '../constants/searchConstants'
+import { Athlete, Country, CUSTOM_GAME_DIALOG_DROPDOWN_LIMIT, RankRange } from '../constants/searchConstants'
 import moment from 'moment'
 
 const mctAthletes = require('@/public/data/mct.json')
@@ -39,13 +39,18 @@ export const getRandomAthlete = () => {
     return processAthletes([allAthletes[Math.floor(Math.random() * allAthletes.length)]])[0]
 }
 
-export const getFilteredData = (nameValue: string) => {
-    return allAthletes.filter((item: Athlete) => {
+export const getFilteredData = (nameValue: string, limitResults = false) => {
+    let filteredData = allAthletes.filter((item: Athlete) => {
         const searchString = nameValue.toLowerCase()
         const name = item.name.toLowerCase()
 
         return searchString && name.startsWith(searchString) && name !== searchString
     })
+
+    if (limitResults && filteredData.length > CUSTOM_GAME_DIALOG_DROPDOWN_LIMIT)
+        filteredData = filteredData.slice(0, CUSTOM_GAME_DIALOG_DROPDOWN_LIMIT)
+
+    return filteredData
 }
 
 export const getCountryFromName = (countryName: string) => {

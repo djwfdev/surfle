@@ -2,6 +2,7 @@ import { SettingsProvider } from '@/context/SettingsContext'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Toaster } from 'sonner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +19,7 @@ const RootLayout = ({
     return (
         <html lang="en">
             <body className={inter.className}>
+                <Toaster richColors />
                 <SettingsProvider>
                     {children}
                 </SettingsProvider>

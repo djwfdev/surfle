@@ -20,4 +20,6 @@ export interface RankRange {
     (rank: number): string
 }
 
-export const MAX_GUESSES = 7
+export const MAX_GUESSES = 6
+export const CUSTOM_GAME_DIALOG_DROPDOWN_LIMIT = 6
+export const BASE_URL = 'http://localhost:3000/custom/'

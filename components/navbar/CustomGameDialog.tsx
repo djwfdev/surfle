@@ -8,17 +8,24 @@ import { generateUniqueToken, getFilteredData } from '@/services/searchService'
 import { Input } from '../ui/input'
 import { SearchResults } from '../search/SearchResults'
 import { Label } from '../ui/label'
+import { BASE_URL } from '@/constants/searchConstants'
+import { toast } from 'sonner'
 
 export const CustomGameDialog = (): JSX.Element => {
     const [value, copy] = useCopyToClipboard()
     const [nameValue, setNameValue] = useState('')
-    const [url, setUrl] = useState('')
+    const [gameCode, setGameCode] = useState('')
 
     const onSearch = (athlete: any) => {
         setNameValue(athlete.name)
-        setUrl(() => generateUniqueToken(athlete.name))
+        setGameCode(() => generateUniqueToken(athlete.name))
     }
-    
+
+    const copyUrl = () => {
+        copy(`${BASE_URL}${gameCode}`)
+        toast.success('Copied to clipboard')
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -33,14 +40,27 @@ export const CustomGameDialog = (): JSX.Element => {
                 </DialogHeader>
                 <div className='flex flex-col gap-2 justify-center pt-4 px-8 relative'>
                     <div>
-                        <Input type='text' placeholder='Search for an athlete ...' value={nameValue} onChange={(e) => setNameValue(e.target.value)} />
-                        <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue)} />
+                        <Input 
+                            type='text' 
+                            placeholder='Search for an athlete ...' 
+                            value={nameValue} 
+                            onChange={(e) => setNameValue(e.target.value)} 
+                            onFocus={() => setNameValue('')}
+                        />
+                        <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue, true)} />
                     </div>
                 </div>
-                {url && (
+                {gameCode && (
                     <div className='flex flex-col gap-2 justify-center pt-2 pb-4 px-8'>
                         <Label htmlFor='url'>Here is your custom game link</Label>
-                        <Input type='text' id='url' value={`http://localhost:3000/custom/${url}`} onClick={() => copy(`http://localhost:3000/custom/${url}`)} readOnly />
+                        <Input
+                            type='text'
+                            id='url'
+                            value={`${BASE_URL}${gameCode}`}
+                            onClick={copyUrl}
+                            onFocus={(e) => e.target.select()}
+                            readOnly
+                        />
                     </div>
                 )}
                 <DialogFooter>
@@ -48,7 +68,7 @@ export const CustomGameDialog = (): JSX.Element => {
                         <Button variant='outline'>Cancel</Button>
                     </DialogTrigger>
                     <DialogTrigger asChild>
-                        <Button onClick={() => copy(`http://localhost:3000/custom/${url}`)}>Copy</Button>
+                        <Button onClick={copyUrl}>Copy</Button>
                     </DialogTrigger>
                 </DialogFooter>
             </DialogContent>

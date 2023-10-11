@@ -16,7 +16,7 @@ export const SearchResults = ({ onPress, athletes }: SearchResultsProps): JSX.El
                 <Card className='p-2 mt-2 z-50 w-[86%] absolute bg-background/90 backdrop-blur-sm'>
                     {athletes.map((athlete: Athlete) => (
                         <CardContent className='flex flex-column p-1' key={athlete.name}>
-                            <Button className='flex  justify-start gap-3 w-full h-13' variant='ghost' onClick={() => onPress(athlete)}>
+                            <Button className='flex justify-start gap-3 w-full h-13' variant='ghost' onClick={() => onPress(athlete)}>
                                 <Avatar>
                                     <AvatarImage src={athlete.img} alt={athlete.name} />
                                     <AvatarFallback>{athlete.name.split(' ').map((n) => n[0]).join('')}</AvatarFallback>
