@@ -13,7 +13,7 @@ export const SearchResults = ({ onPress, athletes }: SearchResultsProps): JSX.El
     return (
         <>
             {athletes.length > 0 && (
-                <Card className='p-2 mt-2 z-50 w-[86%] absolute bg-background/90 backdrop-blur-sm'>
+                <Card className='p-2 mt-2 z-50 w-[82%] absolute bg-background/90 backdrop-blur-sm'>
                     {athletes.map((athlete: Athlete) => (
                         <CardContent className='flex flex-column p-1' key={athlete.name}>
                             <Button className='flex justify-start gap-3 w-full h-13' variant='ghost' onClick={() => onPress(athlete)}>
