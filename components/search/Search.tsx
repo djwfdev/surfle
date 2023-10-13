@@ -89,7 +89,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                 </Card>
             )}
             {!hasUserWon && !hasUserLost && (
-                <div className='w-112 flex flex-col gap-2 justify-center p-10 m-auto relative'>
+                <div className='w-112 flex flex-col gap-2 justify-center p-12 m-auto relative'>
                     <div className='flex justify-between mb-2 mr-1 text-sm'>
                         <p className='font-semibold'>{allGuesses.length + 1 == MAX_GUESSES && 'Last guess!'}</p>
                         <p>{`Guess ${allGuesses.length + 1} of ${MAX_GUESSES}`}</p>
