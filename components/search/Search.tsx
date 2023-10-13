@@ -25,7 +25,6 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
         setAllGuesses((prevGuesses) => [athlete, ...prevGuesses])
         setHasUserWon(athlete.name == correctAthlete.name)
         setHasUserLost(allGuesses.length + 1 >= MAX_GUESSES)
-        console.log(correctAthlete.name)
     }
 
     const restartGame = () => {
@@ -59,7 +58,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                 <Card className='w-7/12'>
                     <CardContent className='flex flex-col items-center gap-2 p-6'>
                         <h3 className='text-2xl font-semibold tracking-tight text-green-800'>You won!</h3>
-                        <img className='mb-2' src='../img/trophy.gif'></img>
+                        <img className='mb-2' src='../img/trophy.gif' alt='trophy' />
                         <ConfettiExplosion force={0.7} duration={3200} particleCount={200} width={window.innerWidth / 1.1} />
                         <p className='tracking-wide'>
                             It was{' '}

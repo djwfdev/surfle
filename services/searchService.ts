@@ -31,7 +31,6 @@ export const getAthlete = (athleteHashCode: string) => {
     const athlete = allAthletes.find((item: Athlete) => { 
         return nameValue.toLowerCase().includes(item.name.toLowerCase())
     })
-    console.log(athlete)
     return processAthletes([athlete])[0]
 }
 

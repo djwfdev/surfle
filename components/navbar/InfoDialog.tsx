@@ -52,20 +52,20 @@ export const InfoDialog = (): JSX.Element => {
                 </DialogHeader>
                 <InfoCard
                     title='Age'
-                    description={<>The age of the surfer will turn orange if the guess is within <b>3 years</b> of the unknown surfer's age.</>}
+                    description={<p>The age of the surfer will turn orange if the guess is within <b>3 years</b> of the unknown surfers age.</p>}
                     value={25}
                     icon={<ChevronDown />}
                 />
                 <InfoCard
                     title='Height'
-                    description={<>The height of the surfer will turn orange if the guess is within <b>{isMetric ? '5 cm' : '2 inches'}</b> of the unknown surfer's height.</>}
+                    description={<p>The height of the surfer will turn orange if the guess is within <b>{isMetric ? '5 cm' : '2 inches'}</b> of the unknown surfers height.</p>}
                     value={isMetric ? '173 cm' : getImperialHeight(173)}
                     icon={<ChevronUp />}
                     textAlignLeft
                 />
                 <InfoCard
                     title='Rank'
-                    description={<>All other fields will not turn orange; they will only turn green if the attribute <b>exactly</b> matches the unknown surfer's attribute.</>}
+                    description={<p>All other fields will not turn orange; they will only turn green if the attribute <b>exactly</b> matches the unknown surfers attribute.</p>}
                     value='1-10'
                     isGreen
                 />

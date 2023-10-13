@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     title: 'Surfle',
-    description: 'The pro-surfer guessing game',
+    description: 'The surfing themed wordle game.',
 }
 
 const RootLayout = ({

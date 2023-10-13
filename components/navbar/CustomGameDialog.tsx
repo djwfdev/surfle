@@ -68,7 +68,7 @@ export const CustomGameDialog = (): JSX.Element => {
                         <Button variant='outline'>Cancel</Button>
                     </DialogTrigger>
                     <DialogTrigger asChild>
-                        <Button onClick={copyUrl}>Copy</Button>
+                        <Button onClick={copyUrl} disabled={gameCode == ''}>Copy</Button>
                     </DialogTrigger>
                 </DialogFooter>
             </DialogContent>
