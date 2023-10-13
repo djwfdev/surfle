@@ -89,7 +89,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                 </Card>
             )}
             {!hasUserWon && !hasUserLost && (
-                <div className='w-112 flex flex-col gap-2 justify-center p-8 m-auto relative'>
+                <div className='w-112 flex flex-col gap-2 justify-center p-12 m-auto relative'>
                     <div className='flex justify-between mb-2 mr-1 text-sm'>
                         <p className='font-semibold'>{allGuesses.length + 1 == MAX_GUESSES && 'Last guess!'}</p>
                         <p>{`Guess ${allGuesses.length + 1} of ${MAX_GUESSES}`}</p>
@@ -102,16 +102,18 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                 </div>
             )}
             {allGuesses.length == 0 && (
-                <Card className='w-96'>
-                    <CardContent className='flex flex-col items-center gap-4 p-6 text-center'>
-                        <p className='tracking-wide font-semibold'>Welcome to Surfle!</p>
-                        <p className='tracking-wide'>The surfing themed wordle game.</p>
-                        <p className='tracking-wide'>
-                            As you make guesses, you will discover hints that should lead you to the correct surfer. Make your initial prediction using the
-                            search box above. Best of luck :)
-                        </p>
-                    </CardContent>
-                </Card>
+                <div className='w-112 flex justify-center items-center p-12 m-auto'>
+                    <Card>
+                        <CardContent className='flex flex-col items-center gap-4 p-6 text-center'>
+                            <p className='tracking-wide font-semibold'>Welcome to Surfle!</p>
+                            <p className='tracking-wide'>The surfing themed wordle game.</p>
+                            <p className='tracking-wide'>
+                                As you make guesses, you will discover hints that should lead you to the correct surfer. Make your initial prediction using the
+                                search box above. Best of luck :)
+                            </p>
+                        </CardContent>
+                    </Card>
+                </div>
             )}
         </div>
     )
