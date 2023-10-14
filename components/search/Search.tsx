@@ -7,7 +7,6 @@ import { GuessItems } from '../guess/GuessItems'
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 import ConfettiExplosion from 'react-confetti-explosion'
-import Image from 'next/image'
 
 interface SearchProps {
     athleteHashCode?: string
@@ -18,7 +17,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
     const [hasUserWon, setHasUserWon] = useState(false)
     const [hasUserLost, setHasUserLost] = useState(false)
     const [nameValue, setNameValue] = useState('')
-    const [placeHolder, setPlaceHolder] = useState('Search for an athlete ...')
+    const [navigatorPlatform, setNavigatorPlatform] = useState('')
     const [allGuesses, setAllGuesses] = useState<Athlete[]>([])
     const [processedGuesses, setProcessedGuesses] = useState<Athlete[]>([])
 
@@ -48,6 +47,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
         } else {
             setCorrectAthlete(() => getRandomAthlete())
         }
+        setNavigatorPlatform(navigator.platform)
     }, [])
 
     useEffect(() => {
@@ -103,7 +103,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                             placeholder={'Search for an athlete ...'}
                             value={nameValue} 
                             onChange={(e) => setNameValue(e.target.value)}
-                            {...getIOSInputEventHandlers(/iPad|iPhone|iPod/.test(navigator.platform))} 
+                            {...getIOSInputEventHandlers(/iPad|iPhone|iPod/.test(navigatorPlatform))} 
                         />
                         <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue)} />
                     </div>
