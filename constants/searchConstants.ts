@@ -22,4 +22,3 @@ export interface RankRange {
 
 export const MAX_GUESSES = 6
 export const CUSTOM_GAME_DIALOG_DROPDOWN_LIMIT = 6
-export const BASE_URL = 'https://surfle.vercel.app/custom/'

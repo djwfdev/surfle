@@ -1,25 +1,24 @@
+import Link from 'next/link'
 import React from 'react'
 import { CustomGameDialog } from './CustomGameDialog'
 import { InfoDialog } from './InfoDialog'
-import { SettingsDialog } from './SettingsDialog'
 import { UnitsToggle } from './UnitsToggle'
 
 export const Navbar = (): JSX.Element => {
     return (
-        <>
-            <div className='flex justify-between px-12 pt-12'>
-                {/* Logo */}
-                <h3 className='text-3xl font-bold leading-tight tracking-tighter'>Surfle</h3>
-                {/* Button group */}
-                <div className='flex  gap-1'>
-                    {/* <SettingsDialog /> */}
+        <nav className='flex flex-col py-4 px-6 sm:px-12'>
+            <div className='flex justify-between'>
+                <Link className='text-3xl font-bold leading-tight tracking-tighter hover:cursor-pointer' href={'/'}>
+                    Surfle
+                </Link>
+                <div className='flex gap-1'>
                     <InfoDialog />
                     <UnitsToggle />
                 </div>
             </div>
-            <div className='flex justify-end pb-12 pr-12 pt-3'>
+            <div className='flex justify-start'>
                 <CustomGameDialog />
             </div>
-        </>
+        </nav>
     )
 }

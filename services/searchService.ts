@@ -28,7 +28,7 @@ const decodeAthleteToken = (token: string) => {
 
 export const getAthlete = (athleteHashCode: string) => {
     const nameValue = decodeAthleteToken(athleteHashCode)
-    const athlete = allAthletes.find((item: Athlete) => { 
+    const athlete = allAthletes.find((item: Athlete) => {
         return nameValue.toLowerCase().includes(item.name.toLowerCase())
     })
     return processAthletes([athlete])[0]
@@ -99,6 +99,18 @@ export const processAthletes = (athletes: Athlete[]) => {
     })
 
     return processedAthletes
+}
+
+export const getIOSInputEventHandlers = (isIOS: boolean) => {
+    return isIOS ? {}
+        : {
+            onTouchStart: (e: any) => {
+                e.currentTarget.style.fontSize = '16px'
+            },
+            onBlur: (e: any) => {
+                e.currentTarget.style.fontSize = ''
+            }
+        }
 }
 
 export const isCountry = (value: any): value is Country => {

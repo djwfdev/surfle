@@ -5,7 +5,7 @@ import { Search } from '@/components/search/Search'
 
 const Home = () => {
     return (
-        <main className='flex flex-col justify-between md:min-w-full'>
+        <main className='min-w-[460px]'>
             <Navbar />
             <Search />
         </main>

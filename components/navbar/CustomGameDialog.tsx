@@ -8,7 +8,6 @@ import { generateUniqueToken, getFilteredData } from '@/services/searchService'
 import { Input } from '../ui/input'
 import { SearchResults } from '../search/SearchResults'
 import { Label } from '../ui/label'
-import { BASE_URL } from '@/constants/searchConstants'
 import { toast } from 'sonner'
 
 export const CustomGameDialog = (): JSX.Element => {
@@ -22,7 +21,7 @@ export const CustomGameDialog = (): JSX.Element => {
     }
 
     const copyUrl = () => {
-        copy(`${BASE_URL}${gameCode}`)
+        copy(`${window.location.href}custom/${gameCode}`)
         toast.success('Copied to clipboard')
     }
 
@@ -56,7 +55,7 @@ export const CustomGameDialog = (): JSX.Element => {
                         <Input
                             type='text'
                             id='url'
-                            value={`${BASE_URL}${gameCode}`}
+                            value={`${window.location.href}custom/${gameCode}`}
                             onClick={copyUrl}
                             onFocus={(e) => e.target.select()}
                             readOnly

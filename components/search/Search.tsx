@@ -2,11 +2,12 @@ import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Input } from '../ui/input'
 import { SearchResults } from './SearchResults'
 import { Athlete, MAX_GUESSES } from '@/constants/searchConstants'
-import { getAthlete, getFilteredData, getRandomAthlete, processAthletes } from '@/services/searchService'
+import { getAthlete, getFilteredData, getIOSInputEventHandlers, getRandomAthlete, processAthletes } from '@/services/searchService'
 import { GuessItems } from '../guess/GuessItems'
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 import ConfettiExplosion from 'react-confetti-explosion'
+import Image from 'next/image'
 
 interface SearchProps {
     athleteHashCode?: string
@@ -17,6 +18,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
     const [hasUserWon, setHasUserWon] = useState(false)
     const [hasUserLost, setHasUserLost] = useState(false)
     const [nameValue, setNameValue] = useState('')
+    const [placeHolder, setPlaceHolder] = useState('Search for an athlete ...')
     const [allGuesses, setAllGuesses] = useState<Athlete[]>([])
     const [processedGuesses, setProcessedGuesses] = useState<Athlete[]>([])
 
@@ -53,9 +55,9 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
     }, [allGuesses])
 
     return (
-        <div className='flex flex-col items-center justify-center gap-2'>
+        <section className='flex flex-col items-center justify-center gap-2'>
             {hasUserWon && (
-                <Card className='w-7/12'>
+                <Card className='w-5/12 sm:w-7/12 mt-8'>
                     <CardContent className='flex flex-col items-center gap-2 p-6'>
                         <h3 className='text-2xl font-semibold tracking-tight text-green-800'>You won!</h3>
                         <img className='mb-2' src='../img/trophy.gif' alt='trophy' />
@@ -73,7 +75,7 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                 </Card>
             )}
             {hasUserLost && (
-                <Card className='w-7/12'>
+                <Card className='w-5/12 sm:w-7/12 mt-8'>
                     <CardContent className='flex flex-col items-center gap-2 p-6'>
                         <h3 className='text-2xl font-semibold tracking-tight text-red-900'>You lost :/</h3>
                         <p className='tracking-wide py-4'>
@@ -89,13 +91,20 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                 </Card>
             )}
             {!hasUserWon && !hasUserLost && (
-                <div className='w-112 flex flex-col gap-2 justify-center p-10 m-auto relative'>
-                    <div className='flex justify-between mb-2 mr-1 text-sm'>
+                <div className='w-112 flex flex-col gap-2 justify-center sm:py-10 px-10 relative'>
+                    <div className='flex justify-between mr-1 text-sm'>
                         <p className='font-semibold'>{allGuesses.length + 1 == MAX_GUESSES && 'Last guess!'}</p>
                         <p>{`Guess ${allGuesses.length + 1} of ${MAX_GUESSES}`}</p>
                     </div>
                     <div>
-                        <Input type='text' placeholder='Search for an athlete ...' value={nameValue} onChange={(e) => setNameValue(e.target.value)} />
+                        <Input
+                            className='focus:placeholder-transparent' 
+                            type='text' 
+                            placeholder={'Search for an athlete ...'}
+                            value={nameValue} 
+                            onChange={(e) => setNameValue(e.target.value)}
+                            {...getIOSInputEventHandlers(/iPad|iPhone|iPod/.test(navigator.platform))} 
+                        />
                         <SearchResults onPress={onSearch} athletes={getFilteredData(nameValue)} />
                     </div>
                     {allGuesses?.length != 0 ? <GuessItems athletes={processedGuesses} correctAthlete={correctAthlete} /> : <></>}
@@ -115,6 +124,6 @@ export const Search = ({ athleteHashCode }: SearchProps): JSX.Element => {
                     </Card>
                 </div>
             )}
-        </div>
+        </section>
     )
 }

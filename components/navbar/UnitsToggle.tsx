@@ -6,7 +6,7 @@ export const UnitsToggle = (): JSX.Element => {
     const { isMetric, toggleUnits } = useSettings()
 
     return (
-        <div className='flex  gap-1'>
+        <div className='flex gap-1'>
             <Toggle
                 aria-label='Metric'
                 pressed={isMetric}
