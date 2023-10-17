@@ -6,9 +6,9 @@ import { UnitsToggle } from './UnitsToggle'
 
 export const Navbar = (): JSX.Element => {
     return (
-        <nav className='flex flex-col py-4 px-6 sm:px-12'>
+        <nav className='flex flex-col py-4 px-6 sm:px-12 sticky overflow-hidden'>
             <div className='flex justify-between'>
-                <Link className='text-3xl font-bold leading-tight tracking-tighter hover:cursor-pointer' href={'/'}>
+                <Link className='w-11/12 text-3xl font-bold leading-tight tracking-tighter hover:cursor-pointer' href={'/'}>
                     Surfle
                 </Link>
                 <div className='flex gap-1'>

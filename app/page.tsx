@@ -5,7 +5,7 @@ import { Search } from '@/components/search/Search'
 
 const Home = () => {
     return (
-        <main className='min-w-[460px]'>
+        <main className='min-w-[320px] mx-auto'>
             <Navbar />
             <Search />
         </main>

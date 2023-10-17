@@ -19,7 +19,7 @@ export const UnitsToggle = (): JSX.Element => {
                 pressed={!isMetric}
                 onPressedChange={() => toggleUnits()}
             >
-                freedom
+                imperial
             </Toggle>
         </div>
     )
